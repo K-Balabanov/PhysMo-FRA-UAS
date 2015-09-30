@@ -128,7 +128,7 @@ public class AnalysisWindow extends JFrame implements PropertyChangeListener, Ch
         
         grabData = new JButton("Grab data...");
         grabData.addActionListener(this);
-        exportData = new JButton("Export data as Excel file", new ImageIcon(d.getExcel()));
+        exportData = new JButton("Export data as .txt file", new ImageIcon(d.getFloppyDisk()));
         exportData.addActionListener(this);
         
         
@@ -589,7 +589,7 @@ tf.setBackground(Color.white);
                         }
                         else
                         {
-                            if(Double.parseDouble(tabPane.traces[i].getValueAt(j, 5).toString()) != 0.)
+                            if(Double.parseDouble(tabPane.traces[i].getValueAt(j, 2).toString()) != 0.)
                             {
                                 if(startTime == 0. && j > 1) startTime = Double.parseDouble(tabPane.traces[i].getValueAt(j, 1).toString()) - 0.033;
                                 try
@@ -606,7 +606,7 @@ tf.setBackground(Color.white);
                                     }
                                     try
                                     {
-                                        distance = Double.parseDouble(tabPane.traces[i].getValueAt(j, 5).toString());
+                                        distance = Double.parseDouble(tabPane.traces[i].getValueAt(j, 2).toString());
                                     }
                                     catch(NullPointerException npe)
                                     {

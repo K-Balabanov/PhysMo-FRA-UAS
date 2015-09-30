@@ -111,7 +111,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         stopCam = new JButton("Stop testing", new ImageIcon(d.getCloseIcon()));
         stopCam.setMnemonic(KeyEvent.VK_T);
         mypanel = new JPanel();
-        mypanel.setLayout(new GridLayout(7,1,10,10));
+        mypanel.setLayout(new GridLayout(6,1,10,10));
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         mypanel.setBorder(BorderFactory.createTitledBorder("Options"));
 
@@ -156,9 +156,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
             {
                 //... The user selected a file, get it, use it.
                 File file = videoSelect.getSelectedFile();
-                //PhysMo.videoDirectory = file.getParent();
-                
-                
+                               
                 //... Update user interface.
                 f.setTitle("PhysMo v2.0 - FRA-UAS - "+file.getName());
                 PhysMo.videoName = file.getName();
@@ -169,44 +167,17 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                 PhysMo.duration = videoProperties[0];
                 PhysMo.fps = videoProperties[1];
                 f.repaint();
-                //select working directory
-                
-                //workingDirectorySelect = new JFileChooser(PhysMo.workingDirectory);
-                //workingDirectorySelect.setDialogTitle("Create a directory to work in...");
-                //workingDirectorySelect.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            
-                //retval = workingDirectorySelect.showOpenDialog(null); 
-                //if (retval == JFileChooser.APPROVE_OPTION) 
-                //{
-                    //... The user selected a file, get it, use it.
-                    //file = workingDirectorySelect.getSelectedFile();
-                    //... Update user interface.
-                    //PhysMo.workingDirectory = file.getAbsolutePath();
-                    //PhysMo.lastWorkingDirectory = file.getAbsolutePath();
 
                     processVideo.setEnabled(false);
                     recordVideo.setEnabled(false);
                     testCamera.setEnabled(false);
-                
-                    //FileWriter outFile = new FileWriter("./PhysMo.prop");
-                    //PrintWriter out = new PrintWriter(outFile);
-           
-                    // Also could be written as follows on one line
-                    // Printwriter out = new PrintWriter(new FileWriter(args[0]));
-       
-                    // Write text to file
-                    //out.println(PhysMo.lastVideoDirectory);
-                    //out.println(PhysMo.lastWorkingDirectory);
-                    //out.close();
 
                     f.setVisible(true);
 
                     Thread t = new Thread(this);
             
                     t.start();        
-                    synchronized(this){notifyAll();}
-                                    
-                
+                    synchronized(this){notifyAll();}                                                  
             }
    
         }
@@ -218,7 +189,6 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
             }
             catch(java.io.IOException error)
             {
-                //Handle an IOException here.
                 return;
             }
             pb.setIndeterminate(false);                                                
@@ -244,10 +214,11 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         
         if(e.getSource()== testCamera)
         {
-                testCamera.setEnabled(false);
-                //stopCam.setEnabled(true);
-                pb.setIndeterminate(false);                                                
-                pb.setStringPainted(false);
+            testCamera.setEnabled(false);
+            recordVideo.setEnabled(false);
+                pb.setIndeterminate(true);
+                pb.setString("Testing camera");
+                pb.setStringPainted(true);
                 f.repaint();
                 Runnable startCam = new Runnable() 
                 {
@@ -255,23 +226,12 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                     {
                         try
                         {
-                            Process proc = Runtime.getRuntime().exec("pidof guvcview");
-                            BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                            if(stdInput.readLine() != null)
-                            {
-                                pb.setIndeterminate(true);                                                
-                                pb.setString("Camera is already in use!");
-                                pb.setStringPainted(true);
-                                f.repaint();
-                            }
-                            else
-                            {
-                                Runtime.getRuntime().exec("guvcview --no_display");
-                            }
+                            //Process proc = Runtime.getRuntime().exec("pidof guvcview");
+                            testCamProc = new ProcessBuilder("guvcview").start();
+                            //BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
                         }
                         catch(java.io.IOException error)
                         {
-                            //Handle an IOException here.
                             return;
                         }
                     }
@@ -282,13 +242,17 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                 synchronized(this){notifyAll();}
         }
                 
-        if(e.getSource() == recordVideo)//if testCamera is active it has to be turned off
-        {                      /* String pwd = getPWD();
+        if(e.getSource() == recordVideo)
+        {   
+            testCamera.setEnabled(false);
+            /* 
+            String pwd = getPWD();
             try {
                 p = new ProcessBuilder("ffmpeg", "-an", "-y", "-f", "v4l2", "-framerate", "30", "-video_size", "320x240", "-t", "0:0:3", "-i", "/dev/video1", pwd).start();
             } catch (IOException ex) {
                 Logger.getLogger(FirstScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
+            */
                 Runnable rec = new Runnable() 
                 {
                     public void run() 
@@ -300,11 +264,11 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                             pb.setString("Recording video");
                             pb.setStringPainted(true);
                             f.repaint();
-                            String cmd = "ffmpeg -an -y -f v4l2 -framerate 30 -video_size 320x240 -t 0:0:2 -i /dev/video0 " + pwd;
+                            String cmd = "ffmpeg -an -y -f v4l2 -framerate 30 -video_size 640x480 -t 0:0:2 -i /dev/video0 " + pwd;
                             Runtime.getRuntime().exec(cmd);
                             try
                             {
-                                Thread.sleep(3000);
+                                Thread.sleep(2000);
                             }
                             catch (InterruptedException ex)
                             {
@@ -312,6 +276,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                             }
                             pb.setIndeterminate(false);                                                
                             pb.setStringPainted(false);
+                            testCamera.setEnabled(true);
                             f.repaint();
                         }
                         catch(java.io.IOException error)
@@ -327,7 +292,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         }
         if(e.getSource() == stopCam){
                 testCamera.setEnabled(true);
-                //stopCam.setEnabled(false);
+                recordVideo.setEnabled(true);
                 try
                 {
                     Process proc = Runtime.getRuntime().exec("pidof guvcview");
