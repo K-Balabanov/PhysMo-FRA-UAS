@@ -31,9 +31,6 @@ import java.util.logging.Logger;
 public class FirstScreen extends JPanel implements ActionListener, WindowListener, Runnable
 {  
     public JButton processVideo;
-    public JButton existingProject;
-    public JButton howtoUse;
-    //public JButton aboutPhysmo;
     public JButton recordVideo;
     public JButton testCamera;
     public JButton scidavis;
@@ -44,7 +41,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
     public Distributor d = new Distributor();
     public JPanel mypanel;
     public Process testCamProc;
-    
+    public String pwd;
     public JFileChooser videoSelect;
 
     public AnalysisWindow projectWindow;
@@ -60,7 +57,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         f = frame;
         f.addWindowListener(this);
         this.setLayout(new BorderLayout());
-        
+        pwd = getPWD();
         try
         {
             Runtime.getRuntime().exec("mkdir videos");
@@ -94,14 +91,12 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         menuItemAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
         menuItemAbout.getAccessibleContext().setAccessibleDescription("About the people behind the program.");
         menuInformation.add(menuItemAbout);
-        //f.setJMenuBar(menuBar);
+        f.setJMenuBar(menuBar);
         //menuBar.add(Box.createRigidArea(new Dimension(5,0)));
-        this.add(menuBar, BorderLayout.NORTH);
+        //this.add(menuBar, BorderLayout.NORTH);
         
         processVideo = new JButton("Process Video", new ImageIcon(d.getFrameIcon()));
         processVideo.setMnemonic(KeyEvent.VK_P);
-        //aboutPhysmo = new JButton("About PhysMo", new ImageIcon(d.getQuery()));
-        //aboutPhysmo.setMnemonic(KeyEvent.VK_A);
         recordVideo = new JButton("Record Video", new ImageIcon(d.getVideoIcon()));
         recordVideo.setMnemonic(KeyEvent.VK_R);
         testCamera = new JButton("Test Camera", new ImageIcon(d.getSnapshot()));
@@ -133,8 +128,8 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         processVideo.addActionListener(this);
         scidavis.addActionListener(this);
         //aboutPhysmo.addActionListener(this);
-        menuItemInstructions.addActionListener(this);
-        menuItemAbout.addActionListener(this);
+//        menuItemInstructions.addActionListener(this);
+        //menuItemAbout.addActionListener(this);
         //stopCam.setEnabled(false);
         f.pack();
     }
@@ -196,7 +191,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
             f.repaint();
         }
         
-        if(e.getSource()== menuItemAbout)
+        /*if(e.getSource()== menuItemAbout)
         {
             pb.setIndeterminate(false);                                                
             pb.setStringPainted(false);
@@ -210,7 +205,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                 //Handle an IOException here.
                 return;
             }                              
-        }
+        }*/
         
         if(e.getSource()== testCamera)
         {
@@ -259,12 +254,12 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                     {
                         try
                         {
-                            String pwd = getPWD();
                             pb.setIndeterminate(true);                                                
                             pb.setString("Recording video");
                             pb.setStringPainted(true);
                             f.repaint();
                             String cmd = "ffmpeg -an -y -f v4l2 -framerate 30 -video_size 640x480 -t 0:0:2 -i /dev/video0 " + pwd;
+                            System.out.println(pwd);
                             Runtime.getRuntime().exec(cmd);
                             try
                             {
@@ -324,7 +319,8 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         }
         catch(java.io.IOException error)
         {
-            return "/home/Videos/freefall.avi";
+            System.out.println("uh oh");
+            return "./freefall.avi";
         }
     }
     

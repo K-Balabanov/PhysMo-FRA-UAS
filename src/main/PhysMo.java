@@ -101,7 +101,7 @@ public class PhysMo extends JFrame
         
 
         PhysMo f = new PhysMo();
-        SwingUtilities.updateComponentTreeUI(f);
+        //SwingUtilities.updateComponentTreeUI(f);
         Splash splash = new Splash(3000);
 
         splash.showSplashAndExit();
