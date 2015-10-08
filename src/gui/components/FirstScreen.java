@@ -46,10 +46,6 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
 
     public AnalysisWindow projectWindow;
     
-    public JMenuBar menuBar;
-    public JMenu menuInformation;
-    public JMenuItem menuItemInstructions, menuItemAbout;
-    
     public FirstScreen(JFrame frame)
     {
         pb = new JProgressBar(JProgressBar.HORIZONTAL, 0, 10);
@@ -67,33 +63,6 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         {
             return;
         } 
-        
-        //Create the menu bar.
-        menuBar = new JMenuBar();
-
-        //Build the first menu.
-        menuInformation = new JMenu("Information");
-        menuInformation.setMnemonic(KeyEvent.VK_I);
-        menuInformation.getAccessibleContext().setAccessibleDescription("Instructions and Information about the developers.");
-        menuBar.add(menuInformation);
-
-        //a group of JMenuItems
-        menuItemInstructions = new JMenuItem("Instructions", new ImageIcon(d.getBook()));
-        menuItemInstructions.setMnemonic(KeyEvent.VK_I);
-        menuItemInstructions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.ALT_MASK));
-        menuItemInstructions.getAccessibleContext().setAccessibleDescription("Instructions on how to use the program.");
-        menuInformation.add(menuItemInstructions);
-
-        menuInformation.addSeparator();
-        
-        menuItemAbout = new JMenuItem("Developers", new ImageIcon(d.getQuery()));
-        menuItemAbout.setMnemonic(KeyEvent.VK_D);
-        menuItemAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
-        menuItemAbout.getAccessibleContext().setAccessibleDescription("About the people behind the program.");
-        menuInformation.add(menuItemAbout);
-        f.setJMenuBar(menuBar);
-        //menuBar.add(Box.createRigidArea(new Dimension(5,0)));
-        //this.add(menuBar, BorderLayout.NORTH);
         
         processVideo = new JButton("Process Video", new ImageIcon(d.getFrameIcon()));
         processVideo.setMnemonic(KeyEvent.VK_P);
@@ -127,9 +96,6 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         recordVideo.addActionListener(this);
         processVideo.addActionListener(this);
         scidavis.addActionListener(this);
-        //aboutPhysmo.addActionListener(this);
-//        menuItemInstructions.addActionListener(this);
-        //menuItemAbout.addActionListener(this);
         //stopCam.setEnabled(false);
         f.pack();
     }
@@ -153,7 +119,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                 File file = videoSelect.getSelectedFile();
                                
                 //... Update user interface.
-                f.setTitle("PhysMo v2.0 - FRA-UAS - "+file.getName());
+                f.setTitle("PhysMo v3.0 - FRA-UAS - "+file.getName());
                 PhysMo.videoName = file.getName();
                 PhysMo.videoPath = file.getAbsolutePath();
                 
@@ -190,22 +156,6 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
             pb.setStringPainted(false);
             f.repaint();
         }
-        
-        /*if(e.getSource()== menuItemAbout)
-        {
-            pb.setIndeterminate(false);                                                
-            pb.setStringPainted(false);
-            f.repaint();
-            try
-            {
-                Runtime.getRuntime().exec("gnome-open about.pdf");
-            }
-            catch(java.io.IOException error)
-            {
-                //Handle an IOException here.
-                return;
-            }                              
-        }*/
         
         if(e.getSource()== testCamera)
         {
@@ -398,11 +348,11 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
             int i = JOptionPane.showConfirmDialog(null, "This will close PhysMo and clean the workspace! \nAre you sure?","Close PhysMo",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
             if(i == JOptionPane.YES_OPTION)
             {
-                int frames = 2 * (int) PhysMo.getFPS() + 1;
+                int frames = (int) (Math.ceil(PhysMo.getDuration()) * (int) PhysMo.getFPS() + 3);
                 for(int k = 1; k <= frames; k++){
                     Path path = FileSystems.getDefault().getPath("./workspace/", "frame"+k+".png");
                     try {
-                        Files.delete(path);
+                        Files.deleteIfExists(path);
                     } catch (IOException ex) {
                         System.out.println("Nothing to delete with label frameX.png.");
                         break;
@@ -411,11 +361,16 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                 for(int k = 1; k <= frames; k++){
                     Path path = FileSystems.getDefault().getPath("./workspace/", "preview"+k+".png");
                     try {
-                        Files.delete(path);
+                        Files.deleteIfExists(path);
                     } catch (IOException ex) {
                         System.out.println("Nothing to delete with label previewX.png.");
                         break;
                     }
+                }
+                try {
+                    Runtime.getRuntime().exec("rm -r videos");
+                } catch (IOException ex) {
+                    Logger.getLogger(FirstScreen.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }

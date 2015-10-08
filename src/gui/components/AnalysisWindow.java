@@ -18,6 +18,8 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -89,7 +91,7 @@ public class AnalysisWindow extends JFrame implements PropertyChangeListener, Ch
     public AnalysisWindow()
     {
         
-        super("PhysMo v2.0 - "+PhysMo.videoName);
+        super("PhysMo v3.0 - FRA-UAS - "+PhysMo.videoName);
 
         
         
@@ -563,7 +565,7 @@ tf.setBackground(Color.white);
             // txt-file writing
             Calendar cal = Calendar.getInstance();
             exportedDataName = dateFormat.format(cal.getTime())+".txt";
-            exportedData = new File(exportedDataName);
+            exportedData = new File("/home/Student/Desktop",exportedDataName);
             Formatter fmt;
             try {
                 fmt = new Formatter(exportedData);

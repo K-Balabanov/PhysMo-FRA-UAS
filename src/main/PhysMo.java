@@ -3,17 +3,14 @@
  */
 package main;
 
-import tools.*;
 import gui.images.*;
 import gui.components.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.*;
 
 
 import org.pushingpixels.substance.api.*;
@@ -25,7 +22,7 @@ import org.pushingpixels.substance.api.skin.*;
  *
  * @author jasonkb
  */
-public class PhysMo extends JFrame
+public class PhysMo extends JFrame implements ActionListener
 {
     public FirstScreen openScreen;
     public static String videoName = "";
@@ -43,18 +40,105 @@ public class PhysMo extends JFrame
     
     public static boolean isVisible = false;
     
+    public JMenuBar menuBar;
+    public JMenu menuInformation;
+    public JMenuItem menuItemInstructions, menuItemAbout, menuItemOriginal;
+    
     public PhysMo()
     {
-        super("PhysMo v2.0 - FRA-UAS");
+        super("PhysMo v3.0 - FRA-UAS");
         super.setIconImage(d.getFrameIcon32());
                
+        //Create the menu bar.
+        menuBar = new JMenuBar();
+
+        //Build the first menu.
+        menuInformation = new JMenu("Information");
+        menuInformation.setMnemonic(KeyEvent.VK_I);
+        menuInformation.getAccessibleContext().setAccessibleDescription("Instructions and Information about the developers.");
+        menuBar.add(menuInformation);
+
+        //a group of JMenuItems
+        menuItemInstructions = new JMenuItem("Instructions", new ImageIcon(d.getBook()));
+        menuItemInstructions.setMnemonic(KeyEvent.VK_I);
+        menuItemInstructions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.ALT_MASK));
+        menuItemInstructions.getAccessibleContext().setAccessibleDescription("Instructions on how to use the program.");
+        menuInformation.add(menuItemInstructions);
+
+        menuInformation.addSeparator();
+        
+        menuItemOriginal = new JMenuItem("Original notice", new ImageIcon(d.getFrameIcon()));
+        menuItemOriginal.setMnemonic(KeyEvent.VK_O);
+        menuItemOriginal.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+        menuItemOriginal.getAccessibleContext().setAccessibleDescription("About the people behind the program.");
+        menuInformation.add(menuItemOriginal);
+        
+        menuInformation.addSeparator();
+        
+        menuItemAbout = new JMenuItem("About", new ImageIcon(d.getQuery()));
+        menuItemAbout.setMnemonic(KeyEvent.VK_A);
+        menuItemAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.ALT_MASK));
+        menuItemAbout.getAccessibleContext().setAccessibleDescription("About the people behind the program.");
+        menuInformation.add(menuItemAbout);
+        this.setJMenuBar(menuBar);
+
+        menuItemAbout.addActionListener(this);
+        menuItemInstructions.addActionListener(this);
+        menuItemOriginal.addActionListener(this);
+        
         openScreen = new FirstScreen(this);
-        SwingUtilities.updateComponentTreeUI(openScreen);
+        //SwingUtilities.updateComponentTreeUI(openScreen);
         this.add(openScreen, BorderLayout.CENTER);
         PhysMo.windows = isWindows();
         
     }
     
+        public void actionPerformed(ActionEvent e)
+    {
+        
+        if(e.getSource() == menuItemInstructions)
+        {
+            try
+            {
+                Runtime.getRuntime().exec("gnome-open about.pdf");
+            }
+            catch(java.io.IOException error)
+            {
+                //Handle an IOException here.
+                return;
+            } 
+        }
+        if(e.getSource() == menuItemAbout)
+        {
+            try
+            {
+                Runtime.getRuntime().exec("gnome-open about.pdf");
+            }
+            catch(java.io.IOException error)
+            {
+                //Handle an IOException here.
+                return;
+            } 
+        }
+        if(e.getSource() == menuItemAbout)
+        {
+            try
+            {
+                Runtime.getRuntime().exec("gnome-open about.pdf");
+            }
+            catch(java.io.IOException error)
+            {
+                //Handle an IOException here.
+                return;
+            } 
+        }
+        
+    }
+    
+    public static double getDuration(){
+        return duration;
+    }
+        
     public static double getFPS(){
         return fps;
     }
