@@ -38,7 +38,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
     public JFrame f;
     public FFmpegIO ffmpeg;
     public JProgressBar pb;
-    public Distributor d = new Distributor();
+    public Distributor d;
     public JPanel mypanel;
     public Process testCamProc;
     public String pwd;
@@ -54,6 +54,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         f.addWindowListener(this);
         this.setLayout(new BorderLayout());
         pwd = getPWD();
+        d = new Distributor();
         try
         {
             Runtime.getRuntime().exec("mkdir videos");

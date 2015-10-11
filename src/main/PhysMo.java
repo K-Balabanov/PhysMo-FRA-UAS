@@ -100,7 +100,7 @@ public class PhysMo extends JFrame implements ActionListener
         {
             try
             {
-                Runtime.getRuntime().exec("gnome-open about.pdf");
+                Runtime.getRuntime().exec("gnome-open KnowHow.pdf");
             }
             catch(java.io.IOException error)
             {
@@ -110,17 +110,10 @@ public class PhysMo extends JFrame implements ActionListener
         }
         if(e.getSource() == menuItemAbout)
         {
-            try
-            {
-                Runtime.getRuntime().exec("gnome-open about.pdf");
-            }
-            catch(java.io.IOException error)
-            {
-                //Handle an IOException here.
-                return;
-            } 
+            JDialog about = new aboutDialog(this);
+            about.show();          
         }
-        if(e.getSource() == menuItemAbout)
+        if(e.getSource() == menuItemOriginal)
         {
             try
             {
