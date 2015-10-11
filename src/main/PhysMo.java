@@ -147,22 +147,9 @@ public class PhysMo extends JFrame implements ActionListener
     
     public static void main(String args[])
     {
-            /*FileInputStream fstream = new FileInputStream("PhysMo.prop");
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strline = "";
-            
-            //read in video folder
-            strline = br.readLine();
-            PhysMo.lastVideoDirectory = strline;*/
             System.out.println("Video directory: " + videoDirectory);
-            
-            
-            //strline = br.readLine();
-            //PhysMo.lastWorkingDirectory = strline;
+
             System.out.println("Last working directory: " + workingDirectory);
-            
-            //br.close();
         
         
         Runnable doWorkRunnable = new Runnable() 

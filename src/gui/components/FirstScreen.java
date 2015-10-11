@@ -86,18 +86,15 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
         mypanel.add(recordVideo);
         mypanel.add(processVideo);
         mypanel.add(scidavis);
-        //mypanel.add(aboutPhysmo);
         mypanel.add(pb);
         this.add(mypanel, BorderLayout.CENTER);
 
-        //pb.setVisible(false);
         
         testCamera.addActionListener(this);
         stopCam.addActionListener(this);
         recordVideo.addActionListener(this);
         processVideo.addActionListener(this);
         scidavis.addActionListener(this);
-        //stopCam.setEnabled(false);
         f.pack();
     }
     
