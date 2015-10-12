@@ -80,6 +80,8 @@ public class PlotPoint
     public void reset()
     {
         this.isSet = false;
+        this.x = 0.0;
+        this.y = 0.0;
     }
     
     public double getXPoint()

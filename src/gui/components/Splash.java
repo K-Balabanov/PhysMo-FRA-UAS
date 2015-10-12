@@ -46,7 +46,7 @@ public class Splash extends JWindow
         
         JLabel label = new JLabel(new ImageIcon(d.getSplash()));
         JLabel copyrt = new JLabel
-                ("Version 2.0 Licence: GPLv3", JLabel.CENTER);
+                ("Version 3.0 Licence: GPLv3", JLabel.CENTER);
         copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 16));
         content.add(label, BorderLayout.CENTER);
         content.add(copyrt, BorderLayout.SOUTH);
