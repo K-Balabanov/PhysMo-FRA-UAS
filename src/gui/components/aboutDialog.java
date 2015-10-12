@@ -28,7 +28,7 @@ import javax.swing.JPanel;
  */
 public class aboutDialog extends JDialog {
   public aboutDialog(JFrame parent) {
-    super(parent, "About", true);
+    super(parent, "About PhysMo v3.0 - FRA-UAS", true);
     //this.getContentPane().setBackground(Color.WHITE);
     URL urlImage = getClass().getResource("fh_frankfurt_logo.jpg");
     Image img = Toolkit.getDefaultToolkit().getImage(urlImage);
@@ -38,17 +38,17 @@ public class aboutDialog extends JDialog {
     getContentPane().add(p1, "North");
     Box b = Box.createVerticalBox();
     b.add(Box.createGlue());
-    b.add(new JLabel("  Developed by Kristiyan Balabanov, an IT-Engineering student at the "));
-    b.add(new JLabel("  Frankfurt University of Applied Sciences, 15.10.2015. This would not "));
-    b.add(new JLabel("  have been  possible without the kind supervision of Prof. Dr. Faouzi "));
-    b.add(new JLabel("  Attallah, Dept of Computer Science and Engineering at the FRA-UAS, "));
-    b.add(new JLabel("  and the work of Dr. Jason Barraclough, developer of the original "));
+    b.add(new JLabel("  Developed by Kristiyan Balabanov, an IT-Engineering student at the"));
+    b.add(new JLabel("  Frankfurt University of Applied Sciences. This would not have been"));
+    b.add(new JLabel("  possible without the kind supervision of Prof. Dr. Faouzi Attallah,"));
+    b.add(new JLabel("  Department of Computer Science and Engineering at the FRA-UAS,"));
+    b.add(new JLabel("  and the work of Dr. Jason Barraclough, developer of the original"));
     b.add(new JLabel("  PhysMo software."));
-    b.add(new JLabel("  Neither I, nor the FRA-UAS claim any rights to this product. I have "));
-    b.add(new JLabel("  used exquisitely open-source resources in order to create it, and "));
+    b.add(new JLabel("  Neither I, nor the FRA-UAS claim any rights to this product. I have"));
+    b.add(new JLabel("  used exquisitely open source resources in order to create it, and "));
     b.add(new JLabel("  strongly support its further distribution as such."));
     b.add(new JLabel(" "));
-    b.add(new JLabel("  Long live free software! :)"));
+    b.add(new JLabel("  Long live free software! :)       (15.10.2015,   Frankfurt am Main)"));
     b.add(Box.createGlue());
     getContentPane().add(b, "Center");
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
