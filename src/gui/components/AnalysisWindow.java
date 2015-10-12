@@ -565,7 +565,7 @@ tf.setBackground(Color.white);
             // txt-file writing
             Calendar cal = Calendar.getInstance();
             exportedDataName = dateFormat.format(cal.getTime())+".txt";
-            exportedData = new File("/home/Student/Desktop",exportedDataName);
+            exportedData = new File("/home/student/Desktop",exportedDataName);
             Formatter fmt;
             try {
                 fmt = new Formatter(exportedData);

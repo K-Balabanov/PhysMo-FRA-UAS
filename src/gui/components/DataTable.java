@@ -88,19 +88,7 @@ public class DataTable extends JTable
             {
                 return 0.0;
             }
-        }        
-        
-  /*      if(col == 3)
-        {
-            return 1;
-        }
-        
-        if(col == 2)
-        {
-            return 1;
-        }*/
-        
-        
+        }              
         
         if(col == 1)
         {

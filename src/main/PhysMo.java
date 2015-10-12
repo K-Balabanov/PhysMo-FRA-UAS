@@ -30,11 +30,10 @@ public class PhysMo extends JFrame implements ActionListener
     public static String workingDirectory = "./workspace";
     public static String videoInformation = "";
     public static String videoDirectory = "./videos";
-    //public static String lastWorkingDirectory = "./workspace";
     public static double duration = 0.0;
     public static double fps = 0.0;
     public static double unMagnifiedRealWorldDistance = 0.0;
-    public Distributor d = new Distributor();
+    public Distributor d;
     public static boolean windows;
     public static String videoInformationString = "FFMPEG OUTPUT";
     
@@ -47,8 +46,8 @@ public class PhysMo extends JFrame implements ActionListener
     public PhysMo()
     {
         super("PhysMo v3.0 - FRA-UAS");
-        super.setIconImage(d.getFrameIcon32());
-               
+        d = new Distributor(); 
+        super.setIconImage(d.getFrameIcon32()); 
         //Create the menu bar.
         menuBar = new JMenuBar();
 
