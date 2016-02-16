@@ -42,6 +42,7 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
     public JPanel mypanel;
     public Process testCamProc;
     public String pwd;
+    public String videoPWD;
     public JFileChooser videoSelect;
 
     public AnalysisWindow projectWindow;
@@ -202,25 +203,59 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
                     {
                         try
                         {
-                            pb.setIndeterminate(true);                                                
-                            pb.setString("Recording video");
-                            pb.setStringPainted(true);
-                            f.repaint();
+                            File videoFile = new File("."+videoPWD);
                             String cmd = "ffmpeg -an -y -f v4l2 -framerate 30 -video_size 640x480 -t 0:0:2 -i /dev/video0 " + pwd;
                             System.out.println(pwd);
                             Runtime.getRuntime().exec(cmd);
-                            try
-                            {
-                                Thread.sleep(2000);
+                            boolean exists = videoFile.exists();
+                            int i = 0;
+                            while(!videoFile.isFile() && i < 300){
+                                try
+                                {
+                                    Thread.sleep(10);
+                                    i++;
+                                }
+                                catch (InterruptedException ex)
+                                {
+                                    Logger.getLogger(FirstScreen.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                            catch (InterruptedException ex)
-                            {
-                                Logger.getLogger(FirstScreen.class.getName()).log(Level.SEVERE, null, ex);
+                            if(i < 300){
+                                pb.setIndeterminate(true);                                                
+                                pb.setString("Recording video");
+                                pb.setStringPainted(true);
+                                f.repaint();
+                                try
+                                {
+                                    Thread.sleep(2000);
+                                }
+                                catch (InterruptedException ex)
+                                {
+                                    Logger.getLogger(FirstScreen.class.getName()).log(Level.SEVERE, null, ex);
+                                }   
+                                pb.setIndeterminate(false);                                                
+                                pb.setStringPainted(false);
+                                testCamera.setEnabled(true);
+                                f.repaint();
                             }
-                            pb.setIndeterminate(false);                                                
-                            pb.setStringPainted(false);
-                            testCamera.setEnabled(true);
-                            f.repaint();
+                            else{
+                                pb.setIndeterminate(true);                                                
+                                pb.setString("No video file was created!");
+                                pb.setStringPainted(true);
+                                f.repaint();
+                                try
+                                {
+                                    Thread.sleep(4000);
+                                }
+                                catch (InterruptedException ex)
+                                {
+                                    Logger.getLogger(FirstScreen.class.getName()).log(Level.SEVERE, null, ex);
+                                }   
+                                pb.setIndeterminate(false);                                                
+                                pb.setStringPainted(false);
+                                testCamera.setEnabled(true);
+                                f.repaint();
+                            }
                         }
                         catch(java.io.IOException error)
                         {
@@ -262,8 +297,8 @@ public class FirstScreen extends JPanel implements ActionListener, WindowListene
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
             Date date = new Date();
-            String str = stdInput.readLine() + "/videos/" + dateFormat.format(date) + ".avi";
-            return str;
+            videoPWD = stdInput.readLine() + "/videos/" + dateFormat.format(date) + ".avi";
+            return videoPWD;
         }
         catch(java.io.IOException error)
         {
